@@ -1,0 +1,12 @@
+{
+  "default": {
+    "level": "none",
+    "page": {
+      "viewport": {
+        "width": 1280,
+        "height": 1024
+      }
+    }
+  },
+  "urls": []
+}

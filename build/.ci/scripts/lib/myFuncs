@@ -1,0 +1,103 @@
+#!/bin/bash
+
+relBranchName() {
+
+  if [ $# -gt 1 ]; then
+    # If parameters no equal 1
+    echo -e "Incorrect parameters passed"
+  elif [[ $1 != release/* ]]; then
+    echo -e "This is not a release branch string. Must start with 'release/'."
+  else
+    NAME=$1
+    STUB1=${NAME:8}
+    # remove non alphanumeric and - _ chars
+    STUB1=${STUB1//\//-}
+    STUB1=${STUB1//[^A-Za-z0-9\-_]/}
+
+    STUB2=${STUB1:0:7}
+    RELEASE_BRANCH="rel-${STUB2}"
+    # all lowercase
+    RELEASE_BRANCH=`php -r "print strtolower('$RELEASE_BRANCH');"`
+    # replace '.'
+    RELEASE_BRANCH=${RELEASE_BRANCH//./-}
+    # remove final "-" if exists.
+    RELEASE_BRANCH=${RELEASE_BRANCH/%-/}
+
+
+    echo ${RELEASE_BRANCH}
+  fi
+
+}
+
+deleteReleaseEnvs() {
+
+  # Create folder to work in
+  GITDATA_FOLDER="/tmp/workspace/git_data"
+  mkdir -p GITDATA_FOLDER
+
+  GIT_PR_DATA_FILE="${GITDATA_FOLDER}/git_repo_pulls.json"
+  touch ${GIT_PR_DATA_FILE}
+
+  echo -e ${GIT_PR_DATA_FILE}
+
+  # grab github pr data and names
+  GITHUB_REPO_URL="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pulls"
+
+  curl -s -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_REPO_URL} > ${GIT_PR_DATA_FILE}
+
+  ls -sla ${GITDATA_FOLDER}
+
+  GIT_PRS=$(cat $GIT_PR_DATA_FILE | jq -r '.[] | .head["ref"]')
+  PRS=(`echo ${GIT_PRS}`);
+
+  RELEASE_PRS_MOD=()
+  for i in "${PRS[@]}"
+  do
+    if [[ $i == release/* ]]; then
+
+      ENV=$(relBranchName $i)
+      echo -e "PR mod: $ENV"
+      RELEASE_PRS_MOD+=($ENV);
+    fi
+  done
+
+  # Grab Pantheon Env lists
+  PANTH_ENVS_LIST=$(terminus -n env:list $TERMINUS_SITE --format=list)
+  ENVS=(`echo ${PANTH_ENVS_LIST}`);
+
+  PANTH_RELEASE_ENVS=()
+  for i in "${ENVS[@]}"
+  do
+    if [[ $i == rel-* ]]; then
+      echo -e "Env: $i"
+      PANTH_RELEASE_ENVS+=($i)
+    fi
+  done
+
+  # Compare Lists
+  MULTI_DEV_TO_DELETE=()
+
+  for i in "${PANTH_RELEASE_ENVS[@]}"
+  do
+
+    if [[ ! " ${RELEASE_PRS_MOD[@]} " =~ " ${i} " ]]; then
+      MULTI_DEV_TO_DELETE+=($i)
+    fi
+  done
+
+  echo -e ""
+
+  # Remove unneeded environments
+  for i in "${MULTI_DEV_TO_DELETE[@]}"
+  do
+    echo -e "Deleteing $TERMINUS_SITE.$i"
+    terminus -n multidev:delete --delete-branch -y -- ${TERMINUS_SITE}.${i}
+
+  done
+
+  echo -e ""
+}
+
+mktouch() {
+  mkdir -p $(dirname $1) && touch $1;
+}

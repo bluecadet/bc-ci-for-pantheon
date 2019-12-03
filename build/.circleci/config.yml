@@ -375,6 +375,60 @@ jobs:
                 path: /tmp/artifacts
                 destination: artifacts
 
+    full_site_checks:
+        <<: *defaults
+        docker:
+            - image: quay.io/peteinge/build-tools:a11y-1.x
+
+        steps:
+            - checkout
+
+            - attach_workspace:
+                at: /tmp/workspace
+
+            - restore_cache:
+                keys:
+                    - npm-deps-{{ checksum "package-lock.json" }}
+
+            - run:
+                name: run npm install
+                command: npm install
+
+            - save_cache:
+                key: npm-deps-{{ checksum "package-lock.json" }}
+                paths:
+                    - ./node_modules
+
+            - run:
+                name: Install broken-link-checker module
+                command: npm install broken-link-checker -g
+
+            # Init Env variables.
+            - run:
+                name: Init Environment Vars
+                command: ./.ci/scripts/env/init-env-vars.sh
+
+            - run:
+                name: Setup Environment Vars
+                command: ./.ci/scripts/env/scheduled-set-env-vars.sh
+
+            - run:
+                name: run Web Page Tests
+                command: ./.ci/scripts/tests/web-page-tests.sh
+
+            - run:
+                name: run Broken Link Checker
+                command: ./.ci/scripts/tests/link-checker-test.sh
+
+            - run:
+                name: Post Results
+                command: ./.ci/scripts/tests/scheduled-results.sh
+
+            - store_artifacts:
+                path: /tmp/artifacts
+                destination: artifacts
+
+
 workflows:
     version: 2
 
@@ -409,3 +463,15 @@ workflows:
                     - testing_performance
                     - testing_behat
                     - testing_a11y
+
+    weekly_checks:
+        triggers:
+            - schedule:
+                cron: "0 0 * * 1" # For Mondays
+                # cron: "0 6 * * *" #UTC
+                filters:
+                    branches:
+                        only:
+                            - master
+        jobs:
+            - full_site_checks

@@ -34,8 +34,6 @@ defaults: &defaults
     ADMIN_USERNAME: admin
     # BUILD_TOOLS_VERSION: ^2.0.0-beta1
     TERM: dumb
-    TERMINUS_SITE: d8train
-    TEST_SITE_NAME: d8train
 
 version: 2.1
 jobs:
@@ -428,7 +426,6 @@ jobs:
                 path: /tmp/artifacts
                 destination: artifacts
 
-
 workflows:
     version: 2
 
@@ -467,7 +464,7 @@ workflows:
     weekly_checks:
         triggers:
             - schedule:
-                cron: "0 0 * * 1" # For Mondays
+                cron: "0 1 * * 1" # For Mondays
                 # cron: "0 6 * * *" #UTC
                 filters:
                     branches:

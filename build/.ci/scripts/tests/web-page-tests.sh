@@ -70,6 +70,7 @@ do
   DATA="$DATA&f=$(cat ${CONFIG_FILE} | jq -r --arg I $i '.urls[$I | tonumber].f')"
   DATA="$DATA&location=$(cat ${CONFIG_FILE} | jq -r --arg I $i '.urls[$I | tonumber].location')"
   DATA="$DATA&video=$(cat ${CONFIG_FILE} | jq -r --arg I $i '.urls[$I | tonumber].video')"
+  DATA="$DATA&runs=$(cat ${CONFIG_FILE} | jq -r --arg I $i '.urls[$I | tonumber].runs')"
 
   echo -e ${DATA}
   echo -e "\n"

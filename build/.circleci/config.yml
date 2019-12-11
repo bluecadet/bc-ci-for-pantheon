@@ -34,6 +34,10 @@ defaults: &defaults
     ADMIN_USERNAME: admin
     # BUILD_TOOLS_VERSION: ^2.0.0-beta1
     TERM: dumb
+    CMS_PLATFORM: D8
+    # CMS_PLATFORM: D7
+    # CMS_PLATFORM: WP
+
 
 version: 2.1
 jobs:

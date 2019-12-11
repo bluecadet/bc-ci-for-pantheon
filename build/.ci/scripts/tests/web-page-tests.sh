@@ -104,7 +104,7 @@ WPT_PR_MESSAGE="$WPT_PR_MESSAGE\n\n[CircleCI Job $CI_BUILD_NUMBER $ICON_ARROW]($
 
 echo -e "$WPT_PR_MESSAGE"
 
-# Set gloabl vars for this job.
+# Set global vars for this job.
 (
   echo "export WPT_PR_MESSAGE='$WPT_PR_MESSAGE'"
   echo "export WPT_NUM_OF_REPORTS='$NUM_OF_REPORTS'"

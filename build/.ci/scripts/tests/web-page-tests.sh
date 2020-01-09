@@ -64,7 +64,7 @@ do
 
   echo -e "Building data\n"
 
-  DATA="k=A.8cf1a4f35b63231d140730024d3e373b"
+  DATA="k=A.183a6f5eb5cdc3973da0c4fab40e7ced"
   DATA="$DATA&label=$(cat ${CONFIG_FILE} | jq -r --arg I $i '.urls[$I | tonumber].label')"
   DATA="$DATA&url=$(cat ${CONFIG_FILE} | jq -r --arg I $i '.urls[$I | tonumber].url')"
   DATA="$DATA&f=$(cat ${CONFIG_FILE} | jq -r --arg I $i '.urls[$I | tonumber].f')"

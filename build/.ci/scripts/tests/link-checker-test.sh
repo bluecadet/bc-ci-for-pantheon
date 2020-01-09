@@ -31,7 +31,7 @@ mkdir -p ${BASE_EXPORT_DIR}
 # Run tests
 ##
 echo -e "Running test...\n"
-blc ${LIVE_SITE_URL} --filter-level 0 -frov > "$BASE_EXPORT_DIR/$BLC_REPORT_NAME"
+blc ${LIVE_SITE_URL} --filter-level 0 -fro > "$BASE_EXPORT_DIR/$BLC_REPORT_NAME"
 
 echo -e "Finished running test...\n"
 

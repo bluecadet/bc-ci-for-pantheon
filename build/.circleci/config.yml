@@ -50,13 +50,13 @@ jobs:
             - attach_workspace:
                 at: /tmp/workspace
 
-            - restore_cache:
-                keys:
-                    - composer-cache
+            # - restore_cache:
+            #     keys:
+            #         - composer-cache-{{ arch }}
 
             - restore_cache:
                 keys:
-                    - npm-deps-{{ checksum "package-lock.json" }}
+                    - npm-deps-build_and_deploy-{{ checksum "package-lock.json" }}-{{ arch }}
 
             # Init Env variables.
             - run:
@@ -94,7 +94,7 @@ jobs:
                 command: npm install
 
             - save_cache:
-                key: npm-deps-{{ checksum "package-lock.json" }}
+                key: npm-deps-build_and_deploy-{{ checksum "package-lock.json" }}-{{ arch }}
                 paths:
                     - ./node_modules
 
@@ -132,13 +132,13 @@ jobs:
         steps:
             - checkout
 
-            - restore_cache:
-                keys:
-                    - composer-cache
+            # - restore_cache:
+            #     keys:
+            #         - composer-cache-{{ arch }}
 
             - restore_cache:
                 keys:
-                    - npm-deps-{{ checksum "package-lock.json" }}
+                    - npm-deps-testing_unit-{{ checksum "package-lock.json" }}-{{ arch }}
 
             - attach_workspace:
                 at: /tmp/workspace
@@ -156,17 +156,17 @@ jobs:
                 name: run composer install to get the vendor directory
                 command: composer install
 
-            - save_cache:
-                key: composer-cache
-                paths:
-                    - $HOME/.composer/cache
+            # - save_cache:
+            #     key: composer-cache-{{ arch }}
+            #     paths:
+            #         - $HOME/.composer/cache
 
             - run:
                 name: run npm install
                 command: npm install
 
             - save_cache:
-                key: npm-deps-{{ checksum "package-lock.json" }}
+                key: npm-deps-testing_unit-{{ checksum "package-lock.json" }}-{{ arch }}
                 paths:
                     - ./node_modules
 
@@ -215,14 +215,14 @@ jobs:
 
             - restore_cache:
                 keys:
-                    - npm-deps-{{ checksum "package-lock.json" }}
+                    - npm-deps-testing_vis_reg-{{ checksum "package-lock.json" }}-{{ arch }}
 
             - run:
                 name: run npm install
                 command: npm install
 
             - save_cache:
-                key: npm-deps-{{ checksum "package-lock.json" }}
+                key: npm-deps-testing_vis_reg{{ checksum "package-lock.json" }}-{{ arch }}
                 paths:
                     - ./node_modules
 
@@ -284,7 +284,7 @@ jobs:
 
             - restore_cache:
                 keys:
-                    - composer-cache
+                    - composer-cache-testing_behat-{{ arch }}
 
             - attach_workspace:
                 at: /tmp/workspace
@@ -307,7 +307,7 @@ jobs:
                 command: ./.ci/scripts/tests/behat-tests.sh
 
             - save_cache:
-                key: composer-cache
+                key: composer-cache-testing_behat-{{ arch }}
                 paths:
                     - $HOME/.composer/cache
 
@@ -390,20 +390,20 @@ jobs:
 
             - restore_cache:
                 keys:
-                    - npm-deps-{{ checksum "package-lock.json" }}
+                    - npm-deps-full_site_checks-{{ checksum "package-lock.json" }}-{{ arch }}
 
             - run:
                 name: run npm install
                 command: npm install
 
-            - save_cache:
-                key: npm-deps-{{ checksum "package-lock.json" }}
-                paths:
-                    - ./node_modules
-
             - run:
                 name: Install broken-link-checker module
                 command: npm install broken-link-checker -g
+
+            - save_cache:
+                key: npm-deps-full_site_checks-{{ checksum "package-lock.json" }}-{{ arch }}
+                paths:
+                    - ./node_modules
 
             # Init Env variables.
             - run:

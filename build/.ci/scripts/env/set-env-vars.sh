@@ -11,6 +11,9 @@ echo "export CI_NODE_INDEX='${CIRCLE_NODE_INDEX}'" >> $BASH_ENV
 
 echo "export CIRCLE_ARTIFACTS_URL='${CIRCLE_BUILD_URL}/artifacts/${CIRCLE_NODE_INDEX}/artifacts'" >> $BASH_ENV
 
+echo 'Setting NODE_PATH'
+echo "export NODE_PATH=$(npm root -g)" >> $BASH_ENV
+
 source $BASH_ENV
 
 echo 'Contents of BASH_ENV:'

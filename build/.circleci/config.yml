@@ -102,9 +102,11 @@ jobs:
                 name: Run Gulp
                 command: node_modules/.bin/gulp build
 
-            - run:
-                name: Build Favicons
-                command: node_modules/.bin/gulp favicon
+            # Favicons should be built and commited. They do not change/update
+            # enough to take up the CI build time.
+            # - run:
+            #     name: Build Favicons
+            #     command: node_modules/.bin/gulp favicon
 
             - run:
                 name: Deploy Code to Pantheon

@@ -16,7 +16,12 @@ module.exports.build = function (url_data, liveURL, multidevURL) {
   let newScenarios = [];
 
   url_data.forEach(function (el) {
-    var scenario = defaultScenario;
+    var scenario = JSON.parse(JSON.stringify(defaultScenario));
+
+    // Merge in overrides if they exist.
+    if (el.backstopjs && el.backstopjs.overrides) {
+      scenario = { ...scenario, ...el.backstopjs.overrides }
+    }
 
     // Set testing URL
     if (isRelativeURL(el.path)) {
@@ -36,6 +41,16 @@ module.exports.build = function (url_data, liveURL, multidevURL) {
 
     // Set label.
     scenario.label = (el.label) ? el.label : el.path;
+
+    // Check for defined config...
+    if (el.backstopjs) {
+      if (el.backstopjs.viewports && el.backstopjs.viewports.length > 0) {
+        // Only add viewports we requested...
+        scenario.viewports = config.viewports.filter((viewport) => {
+          return el.backstopjs.viewports.includes(viewport.name);
+        });
+      }
+    }
 
     // Add to config.
     newScenarios.push(JSON.parse(JSON.stringify(scenario)));

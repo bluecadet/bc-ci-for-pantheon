@@ -36,6 +36,9 @@ Each pipeline will decide which multi-dev env to create based on the structure b
 
 ** If we are not on master or default branch we'll load composer dev dependencies and push to pantheon, so we can run all PHPUNIT. We might be able to add more logic to this, b/c that adds a lot of code to add to Pantheon.
 
+### git commit flags:
+`[clone-content]`
+
 <hr>
 <br>
 
@@ -66,7 +69,7 @@ These are the built in Drupal Unit, Kernel, and functional tests. Need to contin
 Links:
 - Site: [BackstopJS](https://garris.github.io/BackstopJS/)
 
-Visual regression tests. Urls defined in .projectconfig.js file in root and built on demand.
+Visual regression tests. Urls defined in .projectconfig.js file in root and built on demand. Reference Urls are built from the TEST environment unless, `backstopjsReferenceEnv` is set in .projectconfig file. The only acceptable values are "dev", "test"(default), "live".
 
 TODOs:
 - set options for which environment is the base env.

@@ -17,6 +17,10 @@ if (!process.env.MULTIDEV_SITE_URL) {
   process.env.MULTIDEV_SITE_URL = "http://default-md-d8train.pantheonsite.io/";
   console.error("ERROR: using local fallback.");
 }
+if (!process.env.TERMINUS_SITE) {
+  process.env.TERMINUS_SITE = "d8train";
+  console.error("ERROR: using local fallback.");
+}
 
 // Stash live URL, removing any trailing slash
 var liveURL = process.env.TEST_SITE_URL.replace(/\/$/, "");
@@ -38,8 +42,16 @@ if ((Array.isArray(args.incTest) && args.incTest.includes("html")) || args.incTe
 
 // Backstopjs config.
 if ((Array.isArray(args.incTest) && args.incTest.includes("backstopjs")) || args.incTest == "backstopjs") {
-  backstopjsConfigBuilder = require('./backstopjs.config.js');
-  backstopjsConfigBuilder.build(TEST_URLS_DATA, liveURL, multidevURL);
+
+  // Check if we explicitly set the env for testing against.
+  let refURL = liveURL;
+
+  if (CONFIG.backstopjsReferenceEnv && ["dev", "test", "live"].includes(CONFIG.backstopjsReferenceEnv)) {
+    refURL = 'https://' + CONFIG.backstopjsReferenceEnv + '-' + process.env.TERMINUS_SITE + '.pantheonsite.io';
+  }
+
+  let backstopjsConfigBuilder = require('./backstopjs.config.js');
+  backstopjsConfigBuilder.build(TEST_URLS_DATA, refURL, multidevURL);
 }
 
 // Pa11y config.

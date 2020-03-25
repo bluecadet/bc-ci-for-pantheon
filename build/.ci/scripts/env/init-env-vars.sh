@@ -96,7 +96,7 @@ else
   CLONE_CONTENT=TRUE
 fi
 
-
+# Set some CI env vars.
 CI_PR_URL=${CI_PR_URL:-$CIRCLE_PULL_REQUEST}
 CI_PROJECT_USERNAME=${CI_PROJECT_USERNAME:-$CIRCLE_PROJECT_USERNAME}
 CI_PROJECT_REPONAME=${CI_PROJECT_REPONAME:-$CIRCLE_PROJECT_REPONAME}
@@ -111,6 +111,13 @@ ICON_FAILED="&#x274C;"
 ICON_WARNING="&#x26A0;"
 ICON_CHECK="&#x2714;"
 ICON_ARROW="&#10148;"
+
+# Check Live site URL.
+if [[ -n ${LIVE_DOMAIN} ]] ; then
+  LIVE_SITE_URL="https://$LIVE_DOMAIN/"
+else
+  LIVE_SITE_URL="https://live-$TERMINUS_SITE.pantheonsite.io/"
+fi
 
 #=====================================================================================================================
 # EXPORT needed environment variables
@@ -143,7 +150,7 @@ ICON_ARROW="&#10148;"
   echo "export MULTIDEV_SITE_URL='https://$TERMINUS_ENV-$TERMINUS_SITE.pantheonsite.io/'"
   echo "export DEV_SITE_URL='https://dev-$TERMINUS_SITE.pantheonsite.io/'"
   echo "export TEST_SITE_URL='https://test-$TERMINUS_SITE.pantheonsite.io/'"
-  echo "export LIVE_SITE_URL='https://live-$TERMINUS_SITE.pantheonsite.io/'"
+  echo "export LIVE_SITE_URL='$LIVE_SITE_URL'"
   echo "export ARTIFACTS_DIR='artifacts'"
   echo "export ARTIFACTS_FULL_DIR='/tmp/artifacts'"
   echo "export SHOULD_BUILD_JOB=$SHOULD_BUILD_JOB"

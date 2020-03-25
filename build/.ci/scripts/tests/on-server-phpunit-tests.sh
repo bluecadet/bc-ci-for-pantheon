@@ -10,4 +10,4 @@ echo "Second Arg: " "$1"
 drush en simpletest
 
 # Run PHPUnit Tests the Drupal Way.
-php web/core/scripts/run-tests.sh --url $1  --directory modules/custom --verbose --non-html
+php web/core/scripts/run-tests.sh --url $1  --directory modules/custom --verbose --non-html --suppress-deprecations

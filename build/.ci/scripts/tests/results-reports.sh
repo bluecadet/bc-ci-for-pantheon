@@ -39,6 +39,15 @@ echo
 MASTER_PR_MESSAGE="$MASTER_PR_MESSAGE\n\n---\n\n$PHPUNIT_PR_MESSAGE"
 
 
+# D8 upgrade results
+source /tmp/workspace/bash/upcheck_bash_env.txt
+echo 'Contents of CODER_BASH_ENV:\n'
+cat /tmp/workspace/bash/upcheck_bash_env.txt
+echo
+
+MASTER_PR_MESSAGE="$MASTER_PR_MESSAGE\n\n---\n\n$UPCHECK_PR_MESSAGE"
+
+
 # Visual Regression Results
 VR_BASH_ENV=${VR_BASH_ENV:-$HOME/.vrbashrc}
 cp /tmp/workspace/vr_bash_env.txt $VR_BASH_ENV

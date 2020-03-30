@@ -74,8 +74,8 @@ LIGHTHOUSE_PRODUCTION_RESULTS_JSON="$LIGHTHOUSE_PRODUCTION_RESULTS_DIR/lighthous
 LIGHTHOUSE_PRODUCTION_SUMMARY_JSON="$LIGHTHOUSE_PRODUCTION_RESULTS_DIR/lighthouse.summary.json"
 
 # Ping the live environment to wake it from sleep and prime the cache
-echo -e "\nPinging the live environment to wake it from sleep..."
-curl -s -I "$LIVE_SITE_URL" >/dev/null
+# echo -e "\nPinging the live environment to wake it from sleep..."
+# curl -s -I "$PANTHEON_LIVE_SITE_URL" >/dev/null
 
 # Run Lighthouse on the live environment
 echo -e "\nRunning Lighthouse on the live environment"

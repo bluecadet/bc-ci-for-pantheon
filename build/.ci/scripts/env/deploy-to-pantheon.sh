@@ -9,8 +9,10 @@ echo ${CI_BRANCH}
 echo ${PR_NUMBER}
 
 if [[ "$CLONE_CONTENT" == true ]]; then
+  echo -e "Copying site from dev to $TERMINUS_ENV. Cloning content"
   terminus -n build:env:create "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes --clone-content
 else
+  echo -e "Copying site from dev to $TERMINUS_ENV. NOT cloning content"
   terminus -n build:env:create "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes
 fi
 

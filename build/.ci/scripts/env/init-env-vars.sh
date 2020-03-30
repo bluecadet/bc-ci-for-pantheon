@@ -113,6 +113,7 @@ ICON_CHECK="&#x2714;"
 ICON_ARROW="&#10148;"
 
 # Check Live site URL.
+PANTHEON_LIVE_SITE_URL="https://live-$TERMINUS_SITE.pantheonsite.io/"
 if [[ -n ${LIVE_DOMAIN} ]] ; then
   LIVE_SITE_URL="https://$LIVE_DOMAIN/"
 else

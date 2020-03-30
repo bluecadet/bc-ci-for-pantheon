@@ -191,6 +191,11 @@ jobs:
                 name: Run PHP Unit test
                 command: ./.ci/scripts/tests/phpunit-tests.sh
 
+            # Drupal 9 upgrade Check
+            - run:
+                name: Run Drupal 9 upgrade check
+                command: ./.ci/scripts/tests/drupal-upgrade.sh
+
             - persist_to_workspace:
                 root: /tmp/workspace
                 paths:
@@ -199,6 +204,7 @@ jobs:
                     - coder_bash_env.txt
                     - phpunit/*
                     - phpunit_bash_env.txt
+                    - upcheck/*
 
             - store_artifacts:
                 path: /tmp/artifacts

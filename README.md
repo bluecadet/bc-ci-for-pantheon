@@ -64,6 +64,14 @@ This check code in the custom modules directory and custom theme directory again
 
 These are the built in Drupal Unit, Kernel, and functional tests. Need to continue building this out so we can get a better summary of results.
 
+### Code Standards: PHP Unit Tests (WIP)
+
+Check Drupal 9 upgrade status. Checks custom modules and themes for Drupal 9 compatability. Uses [Drupal check](https://github.com/mglaman/drupal-check). TO start checking just include the composer project:
+
+`composer require mglaman/drupal-check:1.0.14`
+
+You could optionally use the [Upgrade Status module](https://www.drupal.org/project/upgrade_status). But be careful about your `mglaman/drupal-check` version. To have this work properly in CI - you need to use an older version of `mglaman/drupal-check`. Will update as soon as a fix is available.
+
 ### Vis-Reg: BackstopJS
 
 Links:

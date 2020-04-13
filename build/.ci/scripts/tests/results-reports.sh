@@ -128,4 +128,9 @@ cp /tmp/workspace/bash $ARTIFACTS_FULL_DIR
 
 # Post back to the pull request on GitHub
 echo -e "\nPosting results back to PR #$PR_NUMBER "
-curl -s -i -u "$CI_PROJECT_USERNAME:$GITHUB_TOKEN" -d "{\"body\": \"$MASTER_PR_MESSAGE\"}" $GITHUB_API_URL/issues/$PR_NUMBER/comments > /dev/null
+GITMESS="$( jq --null-input --compact-output --arg str "$MASTER_PR_MESSAGE" '{"body": $str}' | sed 's/\\\\n/\\n/g' )"
+
+echo -e ${MASTER_PR_MESSAGE}
+echo -e ${GITMESS}
+
+curl -s -i -H "Authorization: token ${GITHUB_TOKEN}" -d "$GITMESS" $GITHUB_API_URL/issues/$PR_NUMBER/comments

@@ -152,6 +152,7 @@ fi
   echo "export DEV_SITE_URL='https://dev-$TERMINUS_SITE.pantheonsite.io/'"
   echo "export TEST_SITE_URL='https://test-$TERMINUS_SITE.pantheonsite.io/'"
   echo "export LIVE_SITE_URL='$LIVE_SITE_URL'"
+  echo "export PANTHEON_LIVE_SITE_URL='$PANTHEON_LIVE_SITE_URL'"
   echo "export ARTIFACTS_DIR='artifacts'"
   echo "export ARTIFACTS_FULL_DIR='/tmp/artifacts'"
   echo "export SHOULD_BUILD_JOB=$SHOULD_BUILD_JOB"

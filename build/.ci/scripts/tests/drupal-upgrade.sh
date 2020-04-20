@@ -64,10 +64,10 @@ if [ "$CMS_PLATFORM" == "D8" ]; then
       UPCHECK_TABLE="\n### Drupal9 Update summary:\n"
       UPCHECK_TABLE="$UPCHECK_TABLE| Test  | Errors |\n"
       UPCHECK_TABLE="$UPCHECK_TABLE| -- | :---: |\n"
-      UPCHECK_TABLE="$UPCHECK_TABLE| Module Errors | \`$\MODULE_ERRORS\` |\n"
-      UPCHECK_TABLE="$UPCHECK_TABLE| Module File Errors | \`$\MODULE_FILE_ERRORS\` |\n"
-      UPCHECK_TABLE="$UPCHECK_TABLE| Theme Errors | \`$\THEME_ERRORS\` |\n"
-      UPCHECK_TABLE="$UPCHECK_TABLE| Theme File Errors | \`$\THEME_FILE_ERRORS\` |\n"
+      UPCHECK_TABLE="$UPCHECK_TABLE| Module Errors | \`$MODULE_ERRORS\` |\n"
+      UPCHECK_TABLE="$UPCHECK_TABLE| Module File Errors | \`$MODULE_FILE_ERRORS\` |\n"
+      UPCHECK_TABLE="$UPCHECK_TABLE| Theme Errors | \`$THEME_ERRORS\` |\n"
+      UPCHECK_TABLE="$UPCHECK_TABLE| Theme File Errors | \`$THEME_FILE_ERRORS\` |\n"
 
 
       if [ $MODULE_ERRORS -gt 0 ] || [ $MODULE_FILE_ERRORS -gt 0 ] || [ $THEME_ERRORS -gt 0 ] || [ $THEME_FILE_ERRORS -gt 0 ]; then

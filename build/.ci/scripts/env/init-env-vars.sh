@@ -6,6 +6,8 @@ set -eo pipefail
 
 printenv
 
+node ./.ci/scripts/env/init-env-vars.js
+
 #
 # Before calling this script, set the following environent variables:
 #
@@ -120,6 +122,15 @@ else
   LIVE_SITE_URL="https://live-$TERMINUS_SITE.pantheonsite.io/"
 fi
 
+# BackstopJS Vars
+# Reference Defaults to LIVE.
+BACKSTOP_REF_ENV=$(cat .projectconfig.json | jq -r '.backstopjsReferenceEnv')
+if [ -z "$BACKSTOP_REF_ENV" ]
+then
+  BACKSTOP_REF_ENV="live"
+fi
+BACKSTOP_TEST_ENV=$DEFAULT_ENV
+
 #=====================================================================================================================
 # EXPORT needed environment variables
 #
@@ -159,6 +170,8 @@ fi
   echo "export CLONE_CONTENT=$CLONE_CONTENT"
   echo "export GITHUB_API_URL=$GITHUB_API_URL"
   echo "export LATEST_GIT_MSG='$LATEST_GIT_MSG'"
+  echo "export BACKSTOP_REF_ENV='$BACKSTOP_REF_ENV'"
+  echo "export BACKSTOP_TEST_ENV='$BACKSTOP_TEST_ENV'"
   echo "export ICON_REPORT='$ICON_REPORT'"
   echo "export ICON_PASSED='$ICON_PASSED'"
   echo "export ICON_FAILED='$ICON_FAILED'"

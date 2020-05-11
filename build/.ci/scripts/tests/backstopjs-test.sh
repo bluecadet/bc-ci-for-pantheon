@@ -18,8 +18,11 @@ echo -e "\nPinging the ${TERMINUS_ENV} multidev environment to wake it from slee
 curl -I "$MULTIDEV_SITE_URL" >/dev/null
 
 # Ping the DEV environment to wake it from sleep
-echo -e "\nPinging the DEV environment to wake it from sleep..."
-curl -I "$DEV_SITE_URL" >/dev/null
+echo -e "\nPinging the ${BACKSTOP_REF_ENV} environment to wake it from sleep..."
+curl -I "https://$BACKSTOP_REF_ENV-$TERMINUS_SITE.pantheonsite.io/" >/dev/null
+
+# set cookies
+node ./tests/backstopjs/backstopjs-generate-cookies.js
 
 # Check for custom config file
 if [ ! -f ./tests/backstopjs/backstop.json ]; then

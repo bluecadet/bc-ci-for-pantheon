@@ -52,6 +52,14 @@ module.exports.build = function (url_data, liveURL, multidevURL) {
       }
     }
 
+    // Check for admin authorization login.
+    if (el.auth) {
+      scenario.auth = true;
+    }
+    else {
+      scenario.auth = false;
+    }
+
     // Add to config.
     newScenarios.push(JSON.parse(JSON.stringify(scenario)));
   });

@@ -213,7 +213,8 @@ jobs:
     testing_vis_reg:
         <<: *defaults
         docker:
-            - image: backstopjs/backstopjs:3.9.5
+            - image: quay.io/peteinge/build-tools:vis-reg-1.x
+            # - image: backstopjs/backstopjs:3.9.5
 
         steps:
             - checkout
@@ -229,6 +230,10 @@ jobs:
                 name: run npm install
                 command: npm install
 
+            - run:
+                name: Add puppeteer
+                command: npm install puppeteer
+
             - save_cache:
                 key: npm-deps-testing_vis_reg{{ checksum "package-lock.json" }}-{{ arch }}
                 paths:
@@ -238,6 +243,15 @@ jobs:
             - run:
                 name: Setup Environment Vars
                 command: ./.ci/scripts/env/set-env-vars.sh
+
+            - run:
+                name: log in
+                command: terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+
+            # If we need to login, set urls.
+            - run:
+                name: Setup authorization urls
+                command: ./.ci/scripts/tests/backstopjs-auth-url.sh
 
             - run:
                 name: visual regression test

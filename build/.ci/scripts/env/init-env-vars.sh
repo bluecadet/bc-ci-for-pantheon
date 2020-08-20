@@ -75,6 +75,13 @@ elif [[ $CI_BRANCH == release/* ]]; then
   # If release branch.
   DEFAULT_ENV=$(relBranchName $CI_BRANCH)
 
+  # Build only if PR is open.
+  if [[ -n ${PR_NUMBER} ]] ; then
+    SHOULD_BUILD_JOB=true
+  else
+    SHOULD_BUILD_JOB=false
+  fi
+
   # Check git message to see if we should clone content.
   if [[ $LATEST_GIT_MSG == *"[clone-content]"* ]]; then
     CLONE_CONTENT=true

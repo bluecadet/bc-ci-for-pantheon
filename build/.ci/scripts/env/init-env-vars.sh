@@ -132,7 +132,7 @@ fi
 # BackstopJS Vars
 # Reference Defaults to LIVE.
 BACKSTOP_REF_ENV=$(cat .projectconfig.json | jq -r '.backstopjsReferenceEnv')
-if [ -z "$BACKSTOP_REF_ENV" ]
+if [ "$BACKSTOP_REF_ENV" == "null"]
 then
   BACKSTOP_REF_ENV="live"
 fi

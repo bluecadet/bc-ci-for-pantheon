@@ -422,6 +422,10 @@ jobs:
                 name: Install broken-link-checker module
                 command: npm install broken-link-checker -g
 
+            - run:
+                name: Install broken-link-checker module locally
+                command: npm install broken-link-checker
+
             - save_cache:
                 key: npm-deps-full_site_checks-{{ checksum "package-lock.json" }}-{{ arch }}
                 paths:

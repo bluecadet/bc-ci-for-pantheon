@@ -23,4 +23,4 @@ MESSAGE="$MESSAGE\n\n---\n\n$BLC_PR_MESSAGE"
 
 # Post back to GitHub, by creating a new Issue.
 echo -e "\nPosting results back to to repo issue."
-curl -s -i -u "$CI_PROJECT_USERNAME:$GITHUB_TOKEN" -d "{\"title\": \"$TITLE\", \"body\": \"$MESSAGE\"}" $GITHUB_API_URL/issues
+curl -s -i -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" -d "{\"title\": \"$TITLE\", \"body\": \"$MESSAGE\"}" $GITHUB_API_URL/issues

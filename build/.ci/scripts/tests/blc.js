@@ -16,10 +16,14 @@ let options = {
   filterLevel: 0,
 };
 
+let count = 0;
+let countMax = 0;
+
 var htmlUrlChecker = new HtmlUrlChecker(options, {
   html: function (tree, robots, response, pageUrl, customData) { },
   junk: function (result, customData) { },
   link: function (result, customData) {
+    // Log Errors.
     if (result.broken) {
       // console.log(result);
       errors.push({
@@ -28,8 +32,15 @@ var htmlUrlChecker = new HtmlUrlChecker(options, {
         brokenReason: result.brokenReason,
       });
     }
+
   },
-  page: function (error, pageUrl, customData) { },
+  page: function (error, pageUrl, customData) {
+    // For long runs, CircleCI needs some output.
+    if (count % 10 == 0) {
+      console.log("Working on " + count + " out of " + countMax + "...");
+    }
+    count++;
+  },
   end: function () {
 
     let reportData = {
@@ -58,6 +69,7 @@ var htmlUrlChecker = new HtmlUrlChecker(options, {
 // Grab URLs from Connect Site.
 let domain = process.argv[2];
 let connUrl = process.env.CONNECT_BC_DOMAIN;
+let connHost = process.env.CONNECT_BC_HOST;
 let connApiKey = process.env.CONNECT_BC_TOKEN;
 
 console.log(connUrl, connApiKey);
@@ -78,6 +90,7 @@ https.get(url, (res) => {
       // console.log(json.code);
       if (json.code == 200) {
         links = json.data;
+        countMax = links.length;
 
         links.forEach((el, i) => {
           // console.log(el, i);
@@ -93,7 +106,7 @@ https.get(url, (res) => {
         });
 
         let post_options = {
-          hostname: connUrl,
+          hostname: connHost,
           port: 443,
           path: '/api/admin/blc/process-links',
           method: 'POST',
@@ -113,7 +126,8 @@ https.get(url, (res) => {
         });
 
         req.on('error', error => {
-          console.error(error)
+          console.error("Error Posting Links");
+          console.error(error);
         });
 
         req.write(data);

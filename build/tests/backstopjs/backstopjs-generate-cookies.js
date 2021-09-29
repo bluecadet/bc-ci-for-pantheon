@@ -8,6 +8,13 @@ fsx.emptyDir('./backstop_data/cookies');
   const browser = await puppeteer.launch();
   const adminPage = await browser.newPage();
 
+  if (!loginUrls || !loginUrls.ref_login_url || !loginUrls.test_login_url) {
+    console.log("Previous errors in login URLs");
+    console.log(loginUrls);
+    await browser.close();
+    return;
+  }
+
   // Reference cookies.
   await adminPage.goto(loginUrls.ref_login_url);
   const adminCookies = await adminPage.cookies();

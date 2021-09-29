@@ -22,11 +22,14 @@ echo -e "\nPinging the ${BACKSTOP_REF_ENV} environment to wake it from sleep..."
 curl -I "https://$BACKSTOP_REF_ENV-$TERMINUS_SITE.pantheonsite.io/" >/dev/null
 
 # set cookies
+echo -e "\nSetting Cookies..."
 node ./tests/backstopjs/backstopjs-generate-cookies.js
 
 # Check for custom config file
+echo -e "\nChecking for Custom config file..."
 if [ ! -f ./tests/backstopjs/backstop.json ]; then
 	# Create Backstop config file from template if needed
+	echo -e "\nUsing defaul config file..."
 	node ./tests/config-gen/build-test-config-files.js --incTest=backstopjs
 fi
 

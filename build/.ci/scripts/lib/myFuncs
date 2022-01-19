@@ -29,6 +29,35 @@ relBranchName() {
 
 }
 
+
+persistBranchName() {
+
+  if [ $# -gt 1 ]; then
+    # If parameters no equal 1
+    echo -e "Incorrect parameters passed"
+  elif [[ $1 != persist/* ]]; then
+    echo -e "This is not a persistent branch string. Must start with 'persist/'."
+  else
+    NAME=$1
+    STUB1=${NAME:8}
+    # remove non alphanumeric and - _ chars
+    STUB1=${STUB1//\//-}
+    STUB1=${STUB1//[^A-Za-z0-9\-_]/}
+
+    STUB2=${STUB1:0:10}
+    PERSIST_BRANCH="${STUB2}"
+    # all lowercase
+    PERSIST_BRANCH=`php -r "print strtolower('$PERSIST_BRANCH');"`
+    # replace '.'
+    PERSIST_BRANCH=${PERSIST_BRANCH//./-}
+    # remove final "-" if exists.
+    PERSIST_BRANCH=${PERSIST_BRANCH/%-/}
+
+    echo ${PERSIST_BRANCH}
+  fi
+
+}
+
 deleteReleaseEnvs() {
 
   # Create folder to work in

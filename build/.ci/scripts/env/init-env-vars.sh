@@ -88,6 +88,13 @@ elif [[ $CI_BRANCH == release/* ]]; then
   else
     CLONE_CONTENT=false
   fi
+elif [[ $CI_BRANCH == persist/* ]]; then
+
+  # If persist branch.
+  DEFAULT_ENV=$(persistBranchName $CI_BRANCH)
+  SHOULD_BUILD_JOB=true
+  CLONE_CONTENT=false
+
 elif [[ -n ${PR_NUMBER} ]] ; then
   # If there is a PR number provided, though, then we will use it instead.
   DEFAULT_ENV="pr-${PR_NUMBER}"

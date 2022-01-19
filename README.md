@@ -26,6 +26,11 @@ Each pipeline will decide which multi-dev env to create based on the structure b
 - IF release branch (release/***)
   - multidev: `rel-name` (name is first 5 chars of the branch name)
   - Will not clone content unless `[clone-content]` is in last git commit message
+- IF release branch (persist/***)
+  - multidev: `name` (name is first 10 chars of the branch name)
+  - Will not clone content
+  - Does NOT need a PR open
+  - NOTE: must manually delete
 - IF pr
   - multidev: `pr-pr##`
   - Will not clone content unless `[clone-content]` is in last git commit message

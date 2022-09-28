@@ -17,7 +17,7 @@ else
 fi
 
 # Run Drush Commands if not WordPress
-if [ "$CMS_PLATFORM" !== "WP" ]; then
+if [ "$CMS_PLATFORM" != "WP" ]; then
   # Run updatedb to ensure that the cloned database is updated for the new code.
   terminus -n drush "$TERMINUS_SITE.$TERMINUS_ENV" -- updatedb -y
 

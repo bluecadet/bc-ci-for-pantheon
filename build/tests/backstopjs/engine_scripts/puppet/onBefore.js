@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 
 module.exports = async (page, scenario, vp, isReference, Engine) => {
 

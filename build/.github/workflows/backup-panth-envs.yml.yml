@@ -1,0 +1,32 @@
+name: Pantheon Backups w/ Terminus
+on:
+  schedule:
+    - cron: '15 15 * * *' #UTC
+env:
+  TERMINUS_SITE: "panth-github-actions"
+
+jobs:
+  test_schedule:
+    runs-on: ubuntu-latest
+    steps:
+
+    # Install Terminus.
+    - name: Install Terminus
+      uses: pantheon-systems/terminus-github-actions@main
+      with:
+        pantheon-machine-token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
+
+    - name: Backup Live
+      env:
+        TERMINUS_SITE: "${{ secrets.TERMINUS_SITE }}"
+      run: terminus backup:create $TERMINUS_SITE.live --keep-for=15 -n -q &
+
+    - name: Backup Test
+      env:
+        TERMINUS_SITE: "${{ secrets.TERMINUS_SITE }}"
+      run: terminus backup:create $TERMINUS_SITE.test --keep-for=15 -n -q &
+
+    - name: Backup Dev
+      env:
+        TERMINUS_SITE: "${{ secrets.TERMINUS_SITE }}"
+      run: terminus backup:create $TERMINUS_SITE.dev --keep-for=15 -n -q &

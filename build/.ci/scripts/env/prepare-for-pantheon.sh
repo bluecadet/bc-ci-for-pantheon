@@ -5,6 +5,7 @@ set -eo pipefail
 # include common funcs
 . ./.ci/scripts/lib/myFuncs
 
+terminus whoami
 
 echo "Prepring build for $TERMINUS_ENV. Pantheon test environment is $TERMINUS_SITE.$TERMINUS_ENV\n"
 
@@ -22,16 +23,3 @@ echo -e "Finished checking PR environments\n"
 # Delete leftover REL environments
 deleteReleaseEnvs
 echo -e "Finished checking Release environments\n"
-
-
-
-if [[ ${CI_BRANCH} == "master" ]] || [[ ${CI_BRANCH} == ${DEFAULT_BRANCH} ]];
-then
-  echo -e "\nRunning composer build-assets to get production assets assets.\n"
-  composer -n build-assets
-else
-  echo -e "\nRunning composer install to get all assets.\n"
-  composer -n install
-fi
-
-echo -e "Finished composer install\n"

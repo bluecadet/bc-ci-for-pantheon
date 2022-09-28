@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var fs = require('fs');
 const CONFIG = require('../../../.projectconfig.js');
 // Save Config as settings.

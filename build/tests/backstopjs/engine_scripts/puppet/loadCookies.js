@@ -1,8 +1,10 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 
 module.exports = async (page, scenario, vp, isReference, Engine) => {
   console.log("Baking the cookies!!");
-  console.log(isReference);
+  // console.log(isReference);
   let cookieFile = "";
 
   if (isReference) {
@@ -11,7 +13,7 @@ module.exports = async (page, scenario, vp, isReference, Engine) => {
     cookieFile = './backstop_data/cookies/cookies_test.json';
   }
 
-  console.log(cookieFile);
+  // console.log(cookieFile);
 
   // Check if file exists.
   if (!fs.existsSync(cookieFile)) {
@@ -35,6 +37,7 @@ module.exports = async (page, scenario, vp, isReference, Engine) => {
     );
   };
   await setCookies();
-  console.log('Cookie state restored with:', JSON.stringify(cookies, null, 2));
+  // console.log('Cookie state restored with:', JSON.stringify(cookies, null, 2));
+  console.log('Cookie state restored');
 
 };

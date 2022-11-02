@@ -10,7 +10,7 @@ jobs:
 
     # Initiate Env Variables.
     - name: Setup Environment Vars
-        run: ./.ci/scripts/env/init-env-vars.sh
+      run: ./.ci/scripts/env/init-env-vars.sh
 
     # Install Terminus.
     - name: Install Terminus

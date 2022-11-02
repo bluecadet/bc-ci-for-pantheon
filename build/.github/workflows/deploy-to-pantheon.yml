@@ -120,13 +120,6 @@ jobs:
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
         run: ./.ci/scripts/tests/backstopjs-test.sh
 
-      - name: Upload artifacts
-        if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: vrt-report
-          path: ${{ env.ARTIFACTS_FULL_DIR }}
-
       - name: Post Artifacts
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
         env:
@@ -135,21 +128,13 @@ jobs:
           BRANCH: "${{ env.GITHUB_REF_NAME }}"
         run: ./.ci/scripts/env/copy-to-connect-bc.sh
 
-      # - name: Comment PR
-      #   if: ${{ env.SHOULD_BUILD_JOB == 'true' && env.PR_NUMBER != 0 }}
-      #   uses: thollander/actions-comment-pull-request@v1
+      # TODO This is taking up too much space on Github.
+      # - name: Upload artifacts
+      #   if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
+      #   uses: actions/upload-artifact@v2
       #   with:
-      #     message: "${{ env.VR_PR_MESSAGE }}"
-      #     pr_number: ${{ env.PR_NUMBER }}
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Comment PR 2
-      #   if: ${{ env.SHOULD_BUILD_JOB == 'true' && env.PR_NUMBER != 0 }}
-      #   uses: thollander/actions-comment-pull-request@v1
-      #   with:
-      #     message: ${{ cat message.md }}
-      #     pr_number: ${{ env.PR_NUMBER }}
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     name: vrt-report
+      #     path: ${{ env.ARTIFACTS_FULL_DIR }}
 
       - name: Comment PR
         if: ${{ env.SHOULD_BUILD_JOB == 'true' && env.PR_NUMBER != 0 }}

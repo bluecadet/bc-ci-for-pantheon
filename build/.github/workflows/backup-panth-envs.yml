@@ -1,5 +1,6 @@
 name: Pantheon Backups w/ Terminus
 on:
+  workflow_dispatch:
   schedule:
     - cron: '15 15 * * *' #UTC
 
@@ -7,6 +8,10 @@ jobs:
   test_schedule:
     runs-on: ubuntu-latest
     steps:
+
+    - uses: actions/checkout@v1
+      with:
+        ref: ${{ github.head_ref || github.ref_name }}
 
     # Initiate Env Variables.
     - name: Setup Environment Vars

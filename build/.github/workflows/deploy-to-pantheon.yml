@@ -61,27 +61,9 @@ jobs:
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
         run: ./.ci/scripts/env/prepare-for-pantheon.sh
 
-      # - name: Update Ignore File.
-      #   if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
-      #   run: terminus build:gitignore:cut
-
-      - name: Cache Composer dependencies
+      - name: Update Ignore File.
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
-        uses: actions/cache@v3
-        with:
-          path: /tmp/composer-cache
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.lock') }}
-
-      - name: Install composer dependencies
-        if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
-        uses: php-actions/composer@v6
-        with:
-          php_version: ${{ env.PHP_VERSION }}
-          php_extensions: gd zip redis
-
-      - name: Reset permissions
-        if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
-        run: sudo chown -R $USER:$USER ${{ github.workspace }}
+        run: terminus build:gitignore:cut
 
       - name: Use Node.js with proper version.
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}

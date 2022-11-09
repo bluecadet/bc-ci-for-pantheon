@@ -65,6 +65,24 @@ jobs:
       #   if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
       #   run: terminus build:gitignore:cut
 
+      - name: Cache Composer dependencies
+        if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
+        uses: actions/cache@v3
+        with:
+          path: /tmp/composer-cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install composer dependencies
+        if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
+        uses: php-actions/composer@v6
+        with:
+          php_version: ${{ env.PHP_VERSION }}
+          php_extensions: gd zip redis
+
+      - name: Reset permissions
+        if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
+        run: sudo chown -R $USER:$USER ${{ github.workspace }}
+
       - name: Use Node.js with proper version.
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
         uses: actions/setup-node@v3
@@ -74,12 +92,12 @@ jobs:
       # Cache vendor folder
       - name: Cache vendor folder
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: cache-vendor
         with:
           path: ./vendor
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: node builder
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
@@ -95,13 +113,14 @@ jobs:
         run: |
           BASE_BRANCH=${GITHUB_REF##*/}
           git remote add pantheon $pantheon_repo
-          git config user.mail "bc-bot@bluecadet.com"
-          git config user.name "Bluecadet Bot"
+          git config --global user.mail "bc-bot@bluecadet.com"
+          git config --global user.name "Bluecadet Bot"
           [ -f .gitignore-panth ] && git rm `cat .gitignore-panth | sed 's/^\///g'` || echo ".gitignore-panth does not exist."
           [ -f .gitignore-panth ] && cat .gitignore-panth >> .gitignore || echo ".gitignore-panth does not exist."
 
       - name: deployer
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
+        timeout-minutes: 20
         run: ./.ci/scripts/env/deploy-to-pantheon.sh
 
       # - name: Wait for Pantheon to fully sync code
@@ -118,10 +137,12 @@ jobs:
 
       - name: Visual regression test
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
+        timeout-minutes: 20
         run: ./.ci/scripts/tests/backstopjs-test.sh
 
       - name: Post Artifacts
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
+        timeout-minutes: 15
         env:
           CONNECT_BC_API: "${{ secrets.CONNECT_BC_KEY }}"
           PROJECT: "${{ env.TERMINUS_SITE }}"

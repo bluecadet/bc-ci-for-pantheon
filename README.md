@@ -4,9 +4,23 @@
 
 CI scripts for pantheon websites (Drupal and Wordpress) developed by Bluecadet.
 
-Use `cadet` utility to update your CI process. bc-ci-for-pantheon is the Default installer. <br>Commands: `cadet ci-update` or `cadet ci-update --incTestConfig`
+Use `cadet` utility to update your CI process. bc-ci-for-pantheon is the Default installer. <br>Commands: `cadet ci-update` or `cadet ci-update --incTestConfig`<br>`cadet ci-update --ci-version 2.1-latest` or `cadet ci-update --ci-version 2.x-latest`
 
 <hr>
+
+## Versions
+
+### 1.x
+
+This version was for Circle CI
+
+### 2.0
+
+This is for Gitrhub Actions, but with Pantheon sites w/out Integrated Composer
+
+### 2.1
+
+This is for Gitrhub Actions, but with Pantheon sites w/ Integrated Composer
 
 ## Build and deply
 
@@ -44,3 +58,9 @@ Each pipeline will decide which multi-dev env to create based on the structure b
 ### git commit flags:
 `[clone-content]`
 
+## Change Log
+
+### 2.0 Branch
+
+- Updates for non-integrated Composer
+- Add in yaml processing to figure out PHP version

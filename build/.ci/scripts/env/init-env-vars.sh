@@ -176,6 +176,15 @@ then
 fi
 BACKSTOP_TEST_ENV=$DEFAULT_ENV
 
+# PHP Version
+parse_yaml pantheon.yml "PANTH_"
+eval $(parse_yaml pantheon.yml "PANTH_")
+
+PHP_VERSION=7.4
+if [[ -n ${PANTH_php_version} ]] ; then
+  PHP_VERSION=$PANTH_php_version
+fi
+
 #=====================================================================================================================
 # EXPORT needed environment variables
 #
@@ -265,6 +274,7 @@ ARTIFACTS_FULL_DIR=$( resolve_relative_path "${TEMP_DIR}${ARTIFACTS_DIR}" )
   echo "ICON_WARNING=$ICON_WARNING"
   echo "ICON_CHECK=$ICON_CHECK"
   echo "ICON_ARROW=$ICON_ARROW"
+  echo "PHP_VERSION=$PHP_VERSION"
 ) >> $GITHUB_ENV
 
 

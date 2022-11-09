@@ -177,7 +177,7 @@ fi
 BACKSTOP_TEST_ENV=$DEFAULT_ENV
 
 # PHP Version
-parse_yaml pantheon.yml "PANTH_"
+# parse_yaml pantheon.yml "PANTH_" # DEBUGGING
 eval $(parse_yaml pantheon.yml "PANTH_")
 
 PHP_VERSION=7.4

@@ -2,11 +2,13 @@ name: Deploy to Pantheon
 on:
   push:
     branches:
-      - '**'
-    tags-ignore:
-      - '**'
+      - master
+      - "feature/**"
+      - "persist/**"
   pull_request:
     types: [opened, reopened]
+    branches:
+      - "develop"
 env:
   TERM: dumb
   ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}

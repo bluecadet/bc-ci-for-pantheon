@@ -9,6 +9,11 @@ on:
     types: [opened, reopened]
     branches:
       - "develop"
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   TERM: dumb
   ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
@@ -109,7 +114,12 @@ jobs:
       - name: deployer
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
         timeout-minutes: 20
-        run: ./.ci/scripts/env/deploy-to-pantheon.sh
+        run: |
+          git config --global user.mail "bc-bot@bluecadet.com"
+          git config --global user.name "Bluecadet Bot"
+          git config user.mail "bc-bot@bluecadet.com"
+          git config user.name "Bluecadet Bot"
+          ./.ci/scripts/env/deploy-to-pantheon.sh
 
       # - name: Wait for Pantheon to fully sync code
       #   run: terminus workflow:wait panth-github-actions.dev --max=6000

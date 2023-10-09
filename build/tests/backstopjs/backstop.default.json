@@ -27,7 +27,7 @@
       "url": "",
       "referenceUrl": "",
       "hideSelectors": [],
-      "removeSelectors": [".c-random-banner"],
+      "removeSelectors": [],
       "selectors": [
         "document"
       ],

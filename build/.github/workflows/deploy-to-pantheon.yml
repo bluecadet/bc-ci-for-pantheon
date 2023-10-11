@@ -85,7 +85,7 @@ jobs:
 
       - name: Install composer dependencies
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
-        uses: php-actions/composer@v6
+        uses: php-actions/composer@bluecadet
         with:
           php_version: ${{ env.PHP_VERSION }}
           php_extensions: gd zip redis

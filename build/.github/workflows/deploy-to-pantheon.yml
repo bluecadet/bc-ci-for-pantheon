@@ -35,8 +35,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
+          fetch-depth: 0
           ref: ${{ github.head_ref || github.ref_name }}
 
       - uses: shimataro/ssh-key-action@v2
@@ -138,6 +139,25 @@ jobs:
         timeout-minutes: 20
         run: ./.ci/scripts/tests/backstopjs-test.sh
 
+
+      ## Create A commit to backup vis-reg files.
+      # - name: Copy Assets Dir.
+      #   if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
+      #   run: |
+      #     mkdir .artifacts
+      #     cp -a ../artifacts/. ./.artifacts
+      #     ls -sla .artifacts/
+
+      # - uses: EndBug/add-and-commit@v9
+      #   if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
+      #   with:
+      #     add: '.artifacts/'
+      #     author_name: 'Bluecadet Bot'
+      #     author_email: bc-bot@bluecadet.com
+      #     message: 'Vis Reg Assets'
+      #     new_branch: 'assets/assets-${{ env.CI_BUILD_NUMBER }}'
+
+      # Posting vis_reg files to a site using https://github.com/pingevt/vis_reg_result
       - name: Post Artifacts
         if: ${{ env.SHOULD_BUILD_JOB == 'true' }}
         timeout-minutes: 15
